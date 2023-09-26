@@ -28,22 +28,6 @@ class HomeViewModel(private val contactDataSource: SleepDataSource) : ViewModel(
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), SleepListState())
 
-
-    init {
-        viewModelScope.launch {
-            for (i in 1..10) {
-                contactDataSource.insertSleepData(
-                    SleepModel(
-                        id = null,
-                        date = Clock.System.now().toEpochMilliseconds(),
-                        startTime = Clock.System.now().toEpochMilliseconds() * i,
-                        endTime = Clock.System.now().toEpochMilliseconds(),
-                    )
-                )
-            }
-        }
-    }
-
     var newItem: SleepModel? by mutableStateOf(null)
         private set
 
