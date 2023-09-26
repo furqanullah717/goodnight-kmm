@@ -16,7 +16,6 @@ kotlin {
         }
 
     }
-
     targets.withType(org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget::class.java).all {
         binaries.withType(org.jetbrains.kotlin.gradle.plugin.mpp.Framework::class.java).all {
             export("dev.icerock.moko:mvvm-core:0.16.1")
@@ -93,6 +92,7 @@ sqldelight {
     database("AppDatabase") {
         packageName = "com.codewithfk.goodnight.shared.db"
         sourceFolders = listOf("sqldelight")
+        linkSqlite = true
     }
 }
 android {
