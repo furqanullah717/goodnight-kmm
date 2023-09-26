@@ -9,10 +9,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.codewithfk.goodnight.core.presentation.AppTheme
+import com.codewithfk.goodnight.di.AppModule
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun App() {
+fun App(
+    darkTheme: Boolean,
+    dynamicColor: Boolean,
+    appModule: AppModule,
+) {
 
     AppTheme(
         isSystemInDarkTheme()
