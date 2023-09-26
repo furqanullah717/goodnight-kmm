@@ -1,0 +1,9 @@
+CREATE TABLE  sleepEntity (
+id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+date TEXT NOT NULL,
+startTime TEXT NOT NULL,
+endTime TEXT NOT NULL
+);
+
+getSleepTimeByDate:
+SELECT * FROM sleepEntity WHERE date = ?;
