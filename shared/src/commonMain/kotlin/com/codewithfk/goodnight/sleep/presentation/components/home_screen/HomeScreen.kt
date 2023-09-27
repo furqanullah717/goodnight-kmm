@@ -23,7 +23,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.codewithfk.goodnight.di.AppModule
-import com.codewithfk.goodnight.utils.DateTimeKtx
+import com.codewithfk.goodnight.utils.DateTime
+import com.codewithfk.goodnight.utils.DateTime.format
+import com.codewithfk.goodnight.utils.getLocalDateTimeFromLong
 import dev.icerock.moko.mvvm.compose.getViewModel
 import dev.icerock.moko.mvvm.compose.viewModelFactory
 import moe.tlaster.precompose.navigation.Navigator
@@ -72,19 +74,15 @@ fun HomeScreen(appModule: AppModule, navigator: Navigator) {
 
                 ) {
                     Text(
-                        text = DateTimeKtx().getFormattedDate(
-                            state.value.contacts[index].date,
-                        )
+                        text = getLocalDateTimeFromLong(state.value.contacts[index].date).format("dd/MMM/yyyy")
                     )
+
+
                     Text(
                         text = "${
-                            DateTimeKtx().getFormattedTime(
-                                state.value.contacts[index].startTime,
-                            )
+                            getLocalDateTimeFromLong(state.value.contacts[index].startTime).format("hh:mm a")
                         } - ${
-                            DateTimeKtx().getFormattedTime(
-                                state.value.contacts[index].endTime,
-                            )
+                            getLocalDateTimeFromLong(state.value.contacts[index].endTime).format("hh:mm a")
                         }"
                     )
 

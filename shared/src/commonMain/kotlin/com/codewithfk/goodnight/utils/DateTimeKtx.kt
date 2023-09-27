@@ -1,42 +1,32 @@
 package com.codewithfk.goodnight.utils
 
+import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 
 
-class DateTimeKtx {
+fun Int.zeroPrefixed(
+    maxLength: Int,
+): String {
+    if (this < 0 || maxLength < 1) return ""
 
-    fun getFormattedDate(
-        iso8601Timestamp: Long,
-    ): String {
-        val localDateTime = iso8601TimestampToLocalDateTime(iso8601Timestamp)
-        val date = localDateTime.date
-        val day = date.dayOfMonth
-        val month = date.monthNumber
-        val year = date.year
-
-        // This format should be generated based on an argument.
-        // For now, we're hardcoding this to the 'dd.MM.yyyy' format.
-        return "${day}/${month}/${year}"
+    val string = this.toString()
+    val currentStringLength = string.length
+    return if (maxLength <= currentStringLength) {
+        string
+    } else {
+        val diff = maxLength - currentStringLength
+        var prefixedZeros = ""
+        repeat(diff) {
+            prefixedZeros += "0"
+        }
+        "$prefixedZeros$string"
     }
+}
 
-    fun getFormattedTime(
-        iso8601Timestamp: Long,
-    ): String {
-        val localDateTime = iso8601TimestampToLocalDateTime(iso8601Timestamp)
-        val date = localDateTime.time
-        val hour = date.hour
-        val minute = date.minute
-
-        // This format should be generated based on an argument.
-        // For now, we're hardcoding this to the 'dd.MM.yyyy' format.
-        return "${hour}:${minute}"
-    }
-
-    private fun iso8601TimestampToLocalDateTime(timestamp: Long): LocalDateTime {
-        return Instant.fromEpochMilliseconds(timestamp)
-            .toLocalDateTime(TimeZone.currentSystemDefault())
-    }
+fun getLocalDateTimeFromLong(long: Long): LocalDateTime {
+    return Instant.fromEpochMilliseconds(long).toLocalDateTime(TimeZone.currentSystemDefault())
 }
