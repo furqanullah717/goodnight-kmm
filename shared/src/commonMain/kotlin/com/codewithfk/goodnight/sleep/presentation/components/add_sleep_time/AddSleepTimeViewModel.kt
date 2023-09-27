@@ -24,7 +24,7 @@ class AddSleepTimeViewModel(private val contactDataSource: SleepDataSource) : Vi
 
     fun addItem(newItem: SleepModel) {
         viewModelScope.launch {
-            newItem?.let {
+            newItem.let {
                 contactDataSource.insertSleepData(it)
                 _state.update { it.copy(onAddedSuccess = true) }
             }

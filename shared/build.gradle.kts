@@ -43,7 +43,7 @@ kotlin {
                 implementation(compose.materialIconsExtended)
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.components.resources)
-                api("moe.tlaster:precompose:1.4.3")
+                api("moe.tlaster:precompose:1.5.4")
                 implementation("com.squareup.sqldelight:runtime:1.5.5")
                 implementation("com.squareup.sqldelight:coroutines-extensions:1.5.5")
                 implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
@@ -51,9 +51,7 @@ kotlin {
                 implementation("dev.icerock.moko:mvvm-compose:0.16.1")
                 implementation("dev.icerock.moko:mvvm-flow:0.16.1")
                 implementation("dev.icerock.moko:mvvm-flow-compose:0.16.1")
-                implementation("com.mohamedrejeb.calf:calf-ui:0.1.1")
-
-
+                api("com.mohamedrejeb.calf:calf-ui:0.2.0")
             }
         }
         val commonTest by getting {
@@ -101,7 +99,7 @@ sqldelight {
 }
 android {
     namespace = "com.codewithfk.goodnight"
-    compileSdk = 33
+    compileSdk = 34
     defaultConfig {
         minSdk = 24
     }
