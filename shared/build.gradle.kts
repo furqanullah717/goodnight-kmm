@@ -19,6 +19,7 @@ kotlin {
     targets.withType(org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget::class.java).all {
         binaries.withType(org.jetbrains.kotlin.gradle.plugin.mpp.Framework::class.java).all {
             export("dev.icerock.moko:mvvm-core:0.16.1")
+            export("com.mohamedrejeb.calf:calf-ui:0.2.0")
         }
     }
 
@@ -50,6 +51,9 @@ kotlin {
                 implementation("dev.icerock.moko:mvvm-compose:0.16.1")
                 implementation("dev.icerock.moko:mvvm-flow:0.16.1")
                 implementation("dev.icerock.moko:mvvm-flow-compose:0.16.1")
+                implementation("com.mohamedrejeb.calf:calf-ui:0.1.1")
+
+
             }
         }
         val commonTest by getting {

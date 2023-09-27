@@ -34,6 +34,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.codewithfk.goodnight.di.AppModule
 import com.codewithfk.goodnight.sleep.domain.SleepModel
+import com.mohamedrejeb.calf.ui.datepicker.AdaptiveDatePicker
+import com.mohamedrejeb.calf.ui.datepicker.rememberAdaptiveDatePickerState
 import dev.icerock.moko.mvvm.compose.getViewModel
 import dev.icerock.moko.mvvm.compose.viewModelFactory
 import kotlinx.datetime.Clock
@@ -122,4 +124,14 @@ fun AddSleepTimeScreen(appModule: AppModule, navigator: Navigator) {
             }
         }
     }
+
+    val state = rememberAdaptiveDatePickerState()
+
+    LaunchedEffect(state.selectedDateMillis) {
+      print(state.selectedDateMillis)
+    }
+
+    AdaptiveDatePicker(
+        state = state,
+    )
 }
