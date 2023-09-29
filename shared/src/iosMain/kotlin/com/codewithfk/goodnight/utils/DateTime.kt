@@ -1,10 +1,13 @@
 package com.codewithfk.goodnight.utils
 
 
+import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toInstant
 import kotlinx.datetime.toKotlinInstant
 import kotlinx.datetime.toLocalDateTime
+import kotlinx.datetime.toNSDate
 import kotlinx.datetime.toNSDateComponents
 import platform.Foundation.NSDateFormatter
 
@@ -12,10 +15,8 @@ actual object DateTime {
     actual fun LocalDateTime.format(format: String): String {
         val dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = format
-        return dateFormatter.stringFromDate(
-            this.toNSDateComponents().date
-                ?: throw IllegalStateException("Could not convert kotlin date to NSDate $this")
-        )
+
+        return dateFormatter.stringFromDate(this.toInstant(TimeZone.currentSystemDefault()).toNSDate())
     }
 
     actual fun getDateTime(string: String, format: String): LocalDateTime {
