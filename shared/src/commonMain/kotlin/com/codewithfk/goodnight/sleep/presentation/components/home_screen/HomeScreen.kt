@@ -15,7 +15,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,7 +22,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.codewithfk.goodnight.di.AppModule
-import com.codewithfk.goodnight.utils.DateTime
 import com.codewithfk.goodnight.utils.DateTime.format
 import com.codewithfk.goodnight.utils.getLocalDateTimeFromLong
 import dev.icerock.moko.mvvm.compose.getViewModel
@@ -31,7 +29,6 @@ import dev.icerock.moko.mvvm.compose.viewModelFactory
 import moe.tlaster.precompose.navigation.Navigator
 import kotlin.random.Random
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(appModule: AppModule, navigator: Navigator) {
     val viewModel = getViewModel(key = "home_screen", factory = viewModelFactory {

@@ -1,6 +1,5 @@
 package com.codewithfk.goodnight.sleep.domain
 
-import com.codewithfk.goodnight.sleep.domain.SleepModel
 import kotlinx.coroutines.flow.Flow
 
 interface SleepDataSource {

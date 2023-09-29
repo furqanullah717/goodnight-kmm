@@ -1,6 +1,5 @@
 package com.codewithfk.goodnight.core.presentation
 
-
 import com.codewithfk.goodnight.di.AppModule
 import com.codewithfk.goodnight.sleep.presentation.components.App
 import moe.tlaster.precompose.PreComposeApplication
