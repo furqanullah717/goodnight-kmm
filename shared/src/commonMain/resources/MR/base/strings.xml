@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<resources>
+    <string name="hello_world">Hello world</string>
+    <string name="hello_x">Hello %s</string>
+    <string name="text_home">Home</string>
+    <string name="text_profile">Profile</string>
+    <string name="text_stats">Stats</string>
+</resources>

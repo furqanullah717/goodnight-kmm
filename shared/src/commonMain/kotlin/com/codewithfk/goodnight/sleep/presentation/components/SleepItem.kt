@@ -33,30 +33,38 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
+import com.codewithfk.goodnight.MR
 import com.codewithfk.goodnight.core.presentation.AppTheme
+import com.codewithfk.goodnight.core.presentation.stringResource
 import com.codewithfk.goodnight.di.AppModule
 import com.codewithfk.goodnight.sleep.presentation.components.add_sleep_time.AddSleepTimeScreen
 import com.codewithfk.goodnight.sleep.presentation.components.home_screen.HomeScreen
+import com.codewithfk.goodnight.sleep.presentation.components.splash.SplashScreen
 import moe.tlaster.precompose.navigation.NavHost
+import moe.tlaster.precompose.navigation.NavOptions
+import moe.tlaster.precompose.navigation.PopUpTo
 import moe.tlaster.precompose.navigation.rememberNavigator
 import moe.tlaster.precompose.navigation.transition.NavTransition
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun App(
     darkTheme: Boolean,
     dynamicColor: Boolean,
     appModule: AppModule,
 ) {
-    val showBottomBar = remember { mutableStateOf(true) }
-    val selectedTab = remember { mutableStateOf("home") }
+
 
     val navigator = rememberNavigator()
     AppTheme(
         darkTheme,
     ) {
-        Scaffold(floatingActionButton = {
 
+        val home = stringResource(MR.strings.text_home)
+        val stats = stringResource(MR.strings.text_stats)
+        val profile = stringResource(MR.strings.text_profile)
+        val showBottomBar = remember { mutableStateOf(false) }
+        val selectedTab = remember { mutableStateOf(home) }
+        Scaffold(floatingActionButton = {
             AnimatedVisibility(
                 showBottomBar.value, enter = fadeIn(), exit = fadeOut()
             ) {
@@ -66,7 +74,7 @@ fun App(
                     }.background(MaterialTheme.colorScheme.tertiary).padding(16.dp),
                     imageVector = Icons.Default.Add,
                     colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onTertiary),
-                    contentDescription = "Home"
+                    contentDescription = home
                 )
             }
         }, bottomBar = {
@@ -84,24 +92,24 @@ fun App(
                     ) {
                         BottomNavActionItem(
                             modifier = Modifier.weight(1f).fillMaxSize()
-                                .clickable { selectedTab.value = "home" },
-                            string = "Home",
+                                .clickable { selectedTab.value = home },
+                            string = home,
                             vector = Icons.Default.Home,
-                            selectedTab.value == "home"
+                            selectedTab.value == home
                         )
                         BottomNavActionItem(
                             modifier = Modifier.weight(1f).fillMaxSize()
-                                .clickable { selectedTab.value = "stats" },
-                            string = "Stats",
+                                .clickable { selectedTab.value = stats },
+                            string = stats,
                             vector = Icons.Default.BarChart,
-                            b = selectedTab.value == "stats"
+                            b = selectedTab.value == stats
                         )
                         BottomNavActionItem(
                             modifier = Modifier.weight(1f).fillMaxSize()
-                                .clickable { selectedTab.value = "profile" },
-                            string = "Profile",
+                                .clickable { selectedTab.value = profile },
+                            string = profile,
                             vector = Icons.Default.VerifiedUser,
-                            b = selectedTab.value == "profile"
+                            b = selectedTab.value == profile
                         )
                     }
                 }
@@ -114,9 +122,30 @@ fun App(
                 // Navigation transition for the scenes in this NavHost, this is optional
                 navTransition = NavTransition(),
                 // The start destination
-                initialRoute = "/home",
+                initialRoute = "/splash",
             ) {
                 // Define a scene to the navigation graph
+                scene(
+                    // Scene's route path
+                    route = "/splash",
+                    // Navigation transition for this scene, this is optional
+                    navTransition = NavTransition(),
+                ) {
+                    showBottomBar.value = false
+                    SplashScreen(
+                        modifier = Modifier.fillMaxSize()
+                            .background(MaterialTheme.colorScheme.primary),
+                        onSplashEndedInvalid = {},
+                        onSplashEndedValid = {
+                            navigator.navigate(
+                                "/home",
+                                NavOptions(popUpTo = PopUpTo("/splash", true))
+                            )
+                        },
+                        onStart = {},
+                        valid = true
+                    )
+                }
                 scene(
                     // Scene's route path
                     route = "/home",
