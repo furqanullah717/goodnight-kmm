@@ -113,17 +113,17 @@ fun App(
                             vector = Icons.Default.BarChart,
                             b = selectedTab.value == stats
                         )
-                        BottomNavActionItem(
-                            modifier = Modifier.weight(1f).fillMaxSize().clickable {
-                                if (selectedTab.value != profile) {
-                                    selectedTab.value = profile
-                                    navigator.navigate("/profile")
-                                }
-                            },
-                            string = profile,
-                            vector = Icons.Default.VerifiedUser,
-                            b = selectedTab.value == profile
-                        )
+//                        BottomNavActionItem(
+//                            modifier = Modifier.weight(1f).fillMaxSize().clickable {
+//                                if (selectedTab.value != profile) {
+//                                    selectedTab.value = profile
+//                                    navigator.navigate("/profile")
+//                                }
+//                            },
+//                            string = profile,
+//                            vector = Icons.Default.VerifiedUser,
+//                            b = selectedTab.value == profile
+//                        )
                     }
                 }
             }
@@ -200,7 +200,7 @@ fun App(
 
 @Composable
 fun BottomNavActionItem(modifier: Modifier, string: String, vector: ImageVector, b: Boolean) {
-    val color = if (b) MaterialTheme.colorScheme.onTertiary else MaterialTheme.colorScheme.onSurface
+    val color = if (b) MaterialTheme.colorScheme.onTertiary else MaterialTheme.colorScheme.inversePrimary
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.Center,

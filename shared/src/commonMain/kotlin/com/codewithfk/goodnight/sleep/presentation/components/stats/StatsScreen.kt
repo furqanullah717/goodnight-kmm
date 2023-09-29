@@ -58,7 +58,7 @@ fun StatsScreen(appModule: AppModule, navigator: Navigator) {
                 .padding(16.dp),
         ) {
             Text(
-                stringResource(MR.strings.text_home),
+                stringResource(MR.strings.text_stats),
                 modifier = Modifier.align(Alignment.Center),
                 color = MaterialTheme.colorScheme.onPrimary
             )

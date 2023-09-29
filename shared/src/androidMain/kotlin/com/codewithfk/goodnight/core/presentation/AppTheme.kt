@@ -18,10 +18,6 @@ import com.codewithfk.goodnight.ui.theme.Typography
 @Composable
 actual fun AppTheme(isDarkMode: Boolean, content: @Composable () -> Unit) {
     val colorScheme = when {
-         Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if(isDarkMode) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
         isDarkMode -> DarkColors
         else -> LightColors
     }
