@@ -1,9 +1,33 @@
 CREATE TABLE  sleepEntity (
 id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-date TEXT NOT NULL,
-startTime TEXT NOT NULL,
-endTime TEXT NOT NULL
+date INTEGER NOT NULL,
+startTime INTEGER NOT NULL,
+endTime INTEGER NOT NULL
 );
 
 getSleepTimeByDate:
 SELECT * FROM sleepEntity WHERE date = ?;
+
+
+getAllTime:
+SELECT *
+FROM sleepEntity
+ORDER BY id ASC;
+
+getAllTimeDesc:
+SELECT *
+FROM sleepEntity
+ORDER BY date DESC;
+
+addSleepTime:
+INSERT OR REPLACE
+INTO sleepEntity(
+    id,
+    date,
+    startTime,
+    endTime
+) VALUES ( ?, ? ,?, ?);
+
+deletSleepEntry:
+DELETE FROM sleepEntity
+WHERE id = :id;

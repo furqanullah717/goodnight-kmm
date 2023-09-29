@@ -16,10 +16,10 @@ kotlin {
         }
 
     }
-
     targets.withType(org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget::class.java).all {
         binaries.withType(org.jetbrains.kotlin.gradle.plugin.mpp.Framework::class.java).all {
             export("dev.icerock.moko:mvvm-core:0.16.1")
+            export("com.mohamedrejeb.calf:calf-ui:0.2.0")
         }
     }
 
@@ -43,14 +43,15 @@ kotlin {
                 implementation(compose.materialIconsExtended)
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.components.resources)
-
+                api("moe.tlaster:precompose:1.5.4")
                 implementation("com.squareup.sqldelight:runtime:1.5.5")
                 implementation("com.squareup.sqldelight:coroutines-extensions:1.5.5")
-                implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
+                api("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
                 implementation("dev.icerock.moko:mvvm-core:0.16.1")
                 implementation("dev.icerock.moko:mvvm-compose:0.16.1")
                 implementation("dev.icerock.moko:mvvm-flow:0.16.1")
                 implementation("dev.icerock.moko:mvvm-flow-compose:0.16.1")
+                api("com.mohamedrejeb.calf:calf-ui:0.2.0")
             }
         }
         val commonTest by getting {
@@ -93,11 +94,12 @@ sqldelight {
     database("AppDatabase") {
         packageName = "com.codewithfk.goodnight.shared.db"
         sourceFolders = listOf("sqldelight")
+        linkSqlite = true
     }
 }
 android {
     namespace = "com.codewithfk.goodnight"
-    compileSdk = 33
+    compileSdk = 34
     defaultConfig {
         minSdk = 24
     }
