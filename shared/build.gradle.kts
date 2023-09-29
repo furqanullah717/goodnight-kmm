@@ -3,6 +3,8 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.compose")
     id("com.squareup.sqldelight")
+    id("dev.icerock.mobile.multiplatform-resources")
+
 }
 
 kotlin {
@@ -20,6 +22,8 @@ kotlin {
         binaries.withType(org.jetbrains.kotlin.gradle.plugin.mpp.Framework::class.java).all {
             export("dev.icerock.moko:mvvm-core:0.16.1")
             export("com.mohamedrejeb.calf:calf-ui:0.2.0")
+            export("dev.icerock.moko:resources:0.23.0")
+            export("dev.icerock.moko:graphics:0.9.0") // toUIColor here
         }
     }
 
@@ -30,7 +34,6 @@ kotlin {
     ).forEach {
         it.binaries.framework {
             baseName = "shared"
-            isStatic = true
         }
     }
 
@@ -52,6 +55,8 @@ kotlin {
                 implementation("dev.icerock.moko:mvvm-flow:0.16.1")
                 implementation("dev.icerock.moko:mvvm-flow-compose:0.16.1")
                 api("com.mohamedrejeb.calf:calf-ui:0.2.0")
+                //resources
+                api("dev.icerock.moko:resources-compose:0.23.0") // for compose multiplatform
             }
         }
         val commonTest by getting {
@@ -60,6 +65,7 @@ kotlin {
             }
         }
         val androidMain by getting {
+            dependsOn(commonMain)
             dependencies {
                 implementation("com.squareup.sqldelight:android-driver:1.5.5")
                 implementation("androidx.appcompat:appcompat:1.6.1")
@@ -111,8 +117,12 @@ android {
 
 dependencies {
     implementation("androidx.core:core:1.10.1")
+    implementation("androidx.lifecycle:lifecycle-common:2.6.2")
     commonMainApi("dev.icerock.moko:mvvm-core:0.16.1")
     commonMainApi("dev.icerock.moko:mvvm-compose:0.16.1")
     commonMainApi("dev.icerock.moko:mvvm-flow:0.16.1")
     commonMainApi("dev.icerock.moko:mvvm-flow-compose:0.16.1")
+}
+multiplatformResources {
+    multiplatformResourcesPackage = "com.codewithfk.goodnight"
 }
