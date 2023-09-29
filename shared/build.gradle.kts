@@ -57,6 +57,9 @@ kotlin {
                 api("com.mohamedrejeb.calf:calf-ui:0.2.0")
                 //resources
                 api("dev.icerock.moko:resources-compose:0.23.0") // for compose multiplatform
+                dependencies {
+                    implementation("io.github.thechance101:chart:Beta-0.0.5")
+                }
             }
         }
         val commonTest by getting {
