@@ -4,6 +4,8 @@ package com.codewithfk.goodnight.sleep.presentation.components
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -40,6 +42,7 @@ import com.codewithfk.goodnight.di.AppModule
 import com.codewithfk.goodnight.sleep.presentation.components.add_sleep_time.AddSleepTimeScreen
 import com.codewithfk.goodnight.sleep.presentation.components.home_screen.HomeScreen
 import com.codewithfk.goodnight.sleep.presentation.components.splash.SplashScreen
+import com.codewithfk.goodnight.sleep.presentation.components.stats.StatsScreen
 import moe.tlaster.precompose.navigation.NavHost
 import moe.tlaster.precompose.navigation.NavOptions
 import moe.tlaster.precompose.navigation.PopUpTo
@@ -66,8 +69,9 @@ fun App(
         val selectedTab = remember { mutableStateOf(home) }
         Scaffold(floatingActionButton = {
             AnimatedVisibility(
-                showBottomBar.value, enter = fadeIn(), exit = fadeOut()
+                showBottomBar.value && selectedTab.value == home, enter = fadeIn(), exit = fadeOut()
             ) {
+
                 Image(
                     modifier = Modifier.clip(RoundedCornerShape(8.dp)).clickable {
                         navigator.navigate("/add")
@@ -91,26 +95,35 @@ fun App(
                         horizontalArrangement = Arrangement.Center
                     ) {
                         BottomNavActionItem(
-                            modifier = Modifier.weight(1f).fillMaxSize()
-                                .clickable { selectedTab.value = home },
-                            string = home,
-                            vector = Icons.Default.Home,
-                            selectedTab.value == home
+                            modifier = Modifier.weight(1f).fillMaxSize().clickable {
+                                if (selectedTab.value != home) {
+                                    navigator.navigate("/home")
+                                    selectedTab.value = home
+                                }
+                            }, string = home, vector = Icons.Default.Home, selectedTab.value == home
                         )
                         BottomNavActionItem(
-                            modifier = Modifier.weight(1f).fillMaxSize()
-                                .clickable { selectedTab.value = stats },
+                            modifier = Modifier.weight(1f).fillMaxSize().clickable {
+                                if (selectedTab.value != stats) {
+                                    selectedTab.value = stats
+                                    navigator.navigate("/stats")
+                                }
+                            },
                             string = stats,
                             vector = Icons.Default.BarChart,
                             b = selectedTab.value == stats
                         )
-                        BottomNavActionItem(
-                            modifier = Modifier.weight(1f).fillMaxSize()
-                                .clickable { selectedTab.value = profile },
-                            string = profile,
-                            vector = Icons.Default.VerifiedUser,
-                            b = selectedTab.value == profile
-                        )
+//                        BottomNavActionItem(
+//                            modifier = Modifier.weight(1f).fillMaxSize().clickable {
+//                                if (selectedTab.value != profile) {
+//                                    selectedTab.value = profile
+//                                    navigator.navigate("/profile")
+//                                }
+//                            },
+//                            string = profile,
+//                            vector = Icons.Default.VerifiedUser,
+//                            b = selectedTab.value == profile
+//                        )
                     }
                 }
             }
@@ -120,7 +133,10 @@ fun App(
                 // Assign the navigator to the NavHost
                 navigator = navigator,
                 // Navigation transition for the scenes in this NavHost, this is optional
-                navTransition = NavTransition(),
+                navTransition = NavTransition(
+                    createTransition = slideInHorizontally(),
+                    destroyTransition = slideOutHorizontally()
+                ),
                 // The start destination
                 initialRoute = "/splash",
             ) {
@@ -129,7 +145,6 @@ fun App(
                     // Scene's route path
                     route = "/splash",
                     // Navigation transition for this scene, this is optional
-                    navTransition = NavTransition(),
                 ) {
                     showBottomBar.value = false
                     SplashScreen(
@@ -138,8 +153,7 @@ fun App(
                         onSplashEndedInvalid = {},
                         onSplashEndedValid = {
                             navigator.navigate(
-                                "/home",
-                                NavOptions(popUpTo = PopUpTo("/splash", true))
+                                "/home", NavOptions(popUpTo = PopUpTo("/splash", true))
                             )
                         },
                         onStart = {},
@@ -150,7 +164,10 @@ fun App(
                     // Scene's route path
                     route = "/home",
                     // Navigation transition for this scene, this is optional
-                    navTransition = NavTransition(),
+                    navTransition = NavTransition(
+                        createTransition = fadeIn(),
+                        destroyTransition = fadeOut()
+                    )
                 ) {
                     showBottomBar.value = true
                     HomeScreen(appModule, navigator)
@@ -159,10 +176,22 @@ fun App(
                     // Scene's route path
                     route = "/add",
                     // Navigation transition for this scene, this is optional
-                    navTransition = NavTransition(),
                 ) {
                     showBottomBar.value = false
                     AddSleepTimeScreen(appModule, navigator)
+                }
+                scene(
+                    // Scene's route path
+                    route = "/stats",
+                    // Navigation transition for this scene, this is optional
+                    navTransition =
+                    NavTransition(
+                        createTransition = fadeIn(),
+                        destroyTransition = fadeOut()
+                    )
+                ) {
+                    showBottomBar.value = true
+                    StatsScreen(appModule, navigator)
                 }
             }
         }
@@ -171,7 +200,7 @@ fun App(
 
 @Composable
 fun BottomNavActionItem(modifier: Modifier, string: String, vector: ImageVector, b: Boolean) {
-    val color = if (b) MaterialTheme.colorScheme.onTertiary else MaterialTheme.colorScheme.onSurface
+    val color = if (b) MaterialTheme.colorScheme.onTertiary else MaterialTheme.colorScheme.inversePrimary
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.Center,

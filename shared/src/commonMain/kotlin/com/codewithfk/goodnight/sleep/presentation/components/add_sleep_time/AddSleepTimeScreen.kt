@@ -37,6 +37,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.codewithfk.goodnight.di.AppModule
 import com.codewithfk.goodnight.sleep.domain.SleepModel
+import com.codewithfk.goodnight.utils.DateTime
 import com.codewithfk.goodnight.utils.DateTime.format
 import com.codewithfk.goodnight.utils.getLocalDateTimeFromLong
 import com.mohamedrejeb.calf.ui.datepicker.AdaptiveDatePicker
@@ -51,6 +52,8 @@ import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toInstant
 import moe.tlaster.precompose.navigation.Navigator
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -315,9 +318,19 @@ fun AddSleepTimeScreen(appModule: AppModule, navigator: Navigator) {
                         viewModel.addItem(
                             SleepModel(
                                 null,
-                                Clock.System.now().toEpochMilliseconds(),
-                                Clock.System.now().toEpochMilliseconds(),
-                                Clock.System.now().toEpochMilliseconds()
+                                startTime =
+                                getTimeInLong(
+                                    datePickerState.selectedDateMillis,
+                                    startTimePickerState.hour,
+                                    startTimePickerState.minute
+                                ),
+                                endTime = getTimeInLong(
+                                    datePickerState.selectedDateMillis,
+                                    endTimePicker.hour,
+                                    endTimePicker.minute
+                                ),
+                                date = datePickerState.selectedDateMillis ?: Clock.System.now()
+                                    .toEpochMilliseconds(),
                             )
                         )
                     },
@@ -341,6 +354,13 @@ fun isFirstTimeLesser(startHour: Int, startMin: Int, endHour: Int, endMin: Int):
     val endTime = LocalTime(endHour, endMin)
 
     return startTime < endTime
+}
+
+fun getTimeInLong(date: Long?, hour: Int, minute: Int): Long {
+    val localDate = getLocalDateTimeFromLong(date ?: Clock.System.now().toEpochMilliseconds())
+    val localTime = LocalTime(hour, minute)
+    val localObj = LocalDateTime(localDate.date, localTime)
+    return localObj.toInstant(TimeZone.currentSystemDefault()).toEpochMilliseconds()
 }
 
 fun getTimeProgress(date: Long?, hour: Int, minute: Int): String {

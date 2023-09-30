@@ -12,7 +12,8 @@ SELECT * FROM sleepEntity WHERE date = ?;
 getAllTime:
 SELECT *
 FROM sleepEntity
-ORDER BY id ASC;
+WHERE  date BETWEEN :startDate AND :endDate
+ORDER BY date DESC;
 
 getAllTimeDesc:
 SELECT *
@@ -31,3 +32,14 @@ INTO sleepEntity(
 deletSleepEntry:
 DELETE FROM sleepEntity
 WHERE id = :id;
+
+fetchBasedOnDate:
+    SELECT
+        date,
+        (endTime - startTime) / 3600000.0 AS hours
+        -- Divide by 3600000.0 to convert milliseconds to hours
+    FROM
+        sleepEntity
+    WHERE  date BETWEEN :startDate AND :endDate
+    ORDER BY date DESC;
+

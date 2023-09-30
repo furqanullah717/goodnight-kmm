@@ -1,8 +1,10 @@
 package com.codewithfk.goodnight.sleep.data
 
 import com.codewithfk.goodnight.shared.db.AppDatabase
+import com.codewithfk.goodnight.sleep.domain.HoursModel
 import com.codewithfk.goodnight.sleep.domain.SleepDataSource
 import com.codewithfk.goodnight.sleep.domain.SleepModel
+import com.codewithfk.goodnight.utils.getPairOfDateForRange
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
 import kotlinx.coroutines.async
@@ -13,7 +15,8 @@ import kotlinx.coroutines.supervisorScope
 class SqlDelightSleepDataSource(db: AppDatabase) : SleepDataSource {
     private val queries = db.timeQueries
     override fun getSleepData(): Flow<List<SleepModel>> {
-        return queries.getAllTime()
+        val pairTime = getPairOfDateForRange(30)
+        return queries.getAllTime(pairTime.first, pairTime.second)
             .asFlow()
             .mapToList()
             .map { contactEntities ->
@@ -51,6 +54,25 @@ class SqlDelightSleepDataSource(db: AppDatabase) : SleepDataSource {
                             }
                         }
                         .map { it.await() }
+                }
+            }
+    }
+
+    override fun getSleepDataByDateRange(startDate: Long, endDate: Long): Flow<List<HoursModel>> {
+        return queries.fetchBasedOnDate(startDate, endDate).asFlow()
+            .mapToList()
+            .map { models ->
+                supervisorScope {
+                    models.map {
+                        async {
+                            HoursModel(
+                                hours = it.hours.toLong() ?: 0L,
+                                date = it.date
+                            )
+                        }
+                    }.map {
+                        it.await()
+                    }
                 }
             }
     }
