@@ -15,6 +15,7 @@ class MainActivity : moe.tlaster.precompose.lifecycle.PreComposeActivity() {
             App(
                 darkTheme = isSystemInDarkTheme(),
                 dynamicColor = true,
+
                 appModule = AppModule(LocalContext.current.applicationContext),
             )
         }
